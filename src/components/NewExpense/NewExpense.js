@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import "./NewExpense.css";
 import ExpenseForm from "./ExpenseForm";
-import AddNewExpense from "./AddNewExpense";
 
 const NewExpense = (props) => {
-  const [expenseFormView, setExpenseFormView] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
-  const showExpenseForm = () => {
-    setExpenseFormView(!expenseFormView);
+  const editingClickHandler = () => {
+    setIsEditing(true);
+  };
+
+  const cancelIsEditing = () => {
+    setIsEditing(false);
   };
 
   const saveExpenseDataHandler = (enteredExpenseData) => {
@@ -20,17 +23,13 @@ const NewExpense = (props) => {
 
   return (
     <div className="new-expense">
-      {expenseFormView ? (
+      {!isEditing && (
+        <button onClick={editingClickHandler}>Add New Expense</button>
+      )}
+      {isEditing && (
         <ExpenseForm
-          setExpenseFormView={setExpenseFormView}
           onSaveExpenseData={saveExpenseDataHandler}
-          showExpenseForm={showExpenseForm}
-        />
-      ) : (
-        <AddNewExpense
-          setExpenseFormView={setExpenseFormView}
-          expenseFormView={expenseFormView}
-          showExpenseForm={showExpenseForm}
+          onCancel={cancelIsEditing}
         />
       )}
     </div>
